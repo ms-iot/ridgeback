@@ -58,3 +58,7 @@
     local-name: pointcloud_to_laserscan
     uri: https://github.com/ros-perception/pointcloud_to_laserscan
     version: lunar-devel
+- git:
+    local-name: serial
+    uri: https://github.com/wjwwood/serial
+    version: master
