@@ -62,3 +62,11 @@
     local-name: serial
     uri: https://github.com/wjwwood/serial
     version: master
+- git:
+    local-name: geographic_info
+    uri: https://github.com/ros-geographic-info/geographic_info
+    version: master
+- git: 
+    local-name: unique_identifier
+    uri: https://github.com/ros-geographic-info/unique_identifier
+    version: master    
