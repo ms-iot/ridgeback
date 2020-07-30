@@ -1,6 +1,6 @@
 - git:
     local-name: ridgeback
-    uri: https://github.com/ridgeback/ridgeback
+    uri: https://github.com/ooeygui/ridgeback
     version: melodic-devel
 - git:
     local-name: ridgeback_desktop
@@ -8,11 +8,7 @@
     version: melodic-devel
 - git:
     local-name: ridgeback_robot
-    uri: https://github.com/ridgeback/ridgeback_robot
-    version: melodic-devel
-- git:
-    local-name: ridgeback_simulator
-    uri: https://github.com/ridgeback/ridgeback_simulator
+    uri: https://github.com/ooeygui/ridgeback_robot
     version: melodic-devel
 - git:
     local-name: cv_camera
@@ -70,3 +66,12 @@
     local-name: unique_identifier
     uri: https://github.com/ros-geographic-info/unique_identifier
     version: master    
+- git: 
+    local-name: puma_motor_driver
+    uri: https://github.com/ooeygui/puma_motor_driver
+    version: master    
+- git: 
+    local-name: puma_motor_driver
+    uri: https://github.com/ooeygui/puma_motor_driver
+    version: master    
+
