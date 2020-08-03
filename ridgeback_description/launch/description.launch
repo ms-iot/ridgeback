@@ -1,10 +1,10 @@
 <launch>
   <arg name="config" default="$(optenv RIDGEBACK_CONFIG empty)" />
+  <arg name="env_runner" value="$(eval 'env_run' if not optenv('OS', 'unknown').lower().startswith('windows') else 'env_run.bat')" />
 
   <param name="robot_description"
-         command="$(find ridgeback_description)/scripts/env_run
+         command="$(find ridgeback_description)/scripts/$(arg env_runner)
                   $(find ridgeback_description)/urdf/configs/$(arg config)
-                  $(find xacro)/xacro $(find ridgeback_description)/urdf/ridgeback.urdf.xacro
-                  --inorder " />
+                  $(find xacro)/xacro $(find ridgeback_description)/urdf/ridgeback.urdf.xacro" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 </launch>
