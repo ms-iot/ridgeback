@@ -27,11 +27,12 @@ include_directories(
 
 add_library(mecanum_drive_controller ${mecanum_drive_controller_headers} ${mecanum_drive_controller_sources})
 target_link_libraries(mecanum_drive_controller ${catkin_LIBRARIES})
+set_target_properties(mecanum_drive_controller PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
 install(TARGETS mecanum_drive_controller
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_GLOBAL_BIN_DESTINATION}
   )
 
 install(FILES mecanum_drive_controller_plugins.xml

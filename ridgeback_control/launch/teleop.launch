@@ -1,7 +1,10 @@
 <launch>
   <arg name="joy_dev" default="/dev/input/js0" />
   <arg name="joystick" default="true" />
-
+  <arg name="robot_namespace" default="r0"/>
+  <!-- Generate the tf_prefix from the namespace -->
+  <arg name="tfpre" default="$(arg robot_namespace)_tf" />
+  
   <group ns="bluetooth_teleop" if="$(arg joystick)">
 
     <group unless="$(optenv RIDGEBACK_PS3 0)" >
@@ -23,8 +26,9 @@
   <arg name="config" default="planar" />
 
   <node pkg="interactive_marker_twist_server" type="marker_server" name="twist_marker_server">
-    <remap from="twist_marker_server/cmd_vel" to="/cmd_vel" />
+    <remap from="twist_marker_server/cmd_vel" to="cmd_vel" />
     <rosparam command="load" file="$(find interactive_marker_twist_server)/config/$(arg config).yaml" />
+    <param name="link_name" value="$(arg tfpre)/base_link" />
   </node>
 
 </launch>

@@ -1,10 +1,64 @@
 <launch>
   <arg name="config" default="$(optenv RIDGEBACK_CONFIG empty)" />
   <arg name="env_runner" value="$(eval 'env_run' if not optenv('OS', 'unknown').lower().startswith('windows') else 'env_run.bat')" />
+  <arg name="robot_namespace" default="r0"/>
+  <!-- Generate the tf_prefix from the namespace -->
+  <arg name="tfpre" default="$(arg robot_namespace)_tf" />
+  <!-- Put value on the parameter server in the group's namespace -->
+  <param name="tf_prefix" value="$(arg robot_namespace)_tf" />
 
+  <!-- Robot Spawn Pose -->
+  <arg name="x" default="0"/>
+  <arg name="y" default="0"/>
+  <arg name="z" default="0.1"/>
+  <arg name="yaw" default="0"/>
+
+
+<!-- "$(find ridgeback_description)/scripts/$(arg env_runner)
+                  $(find ridgeback_description)/urdf/configs/$(arg config)-->
   <param name="robot_description"
-         command="$(find ridgeback_description)/scripts/$(arg env_runner)
-                  $(find ridgeback_description)/urdf/configs/$(arg config)
-                  $(find xacro)/xacro $(find ridgeback_description)/urdf/ridgeback.urdf.xacro" />
+         command="$(find xacro)/xacro $(find ridgeback_description)/urdf/ridgeback.urdf.xacro
+                  --inorder
+                  robot_namespace:=$(arg robot_namespace)
+                  tfpre:=$(arg tfpre)"/>
+  
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+ 
+  <include file="$(find ridgeback_control)/launch/control.launch">
+      <arg name="robot_namespace" value="$(arg robot_namespace)"/>
+  </include>
+
+  <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster" args="$(arg x) $(arg y) 0 $(arg yaw) 0 0 /map /$(arg tfpre)/odom 100" />
+
+  <include file="$(find ridgeback_control)/launch/teleop.launch">
+    <arg name="joystick" value="false"/>
+    <arg name="robot_namespace" value="$(arg robot_namespace)"/>
+  </include>
+
+  <rosparam param="gazebo_ros_control/pid_gains">
+    front_left_wheel:
+      p: 1
+      i: 0.1
+      d: 0
+    front_right_wheel:
+      p: 1
+      i: 0.1
+      d: 0
+    rear_left_wheel:
+      p: 1
+      i: 0.1
+      d: 0
+    rear_right_wheel:
+      p: 1
+      i: 0.1
+      d: 0
+  </rosparam>
+
+  <!-- Spawn Ridgeback -->
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
+        args="-urdf -model ridgeback_$(arg robot_namespace) -param robot_description -x $(arg x) -y $(arg y) -z $(arg z) -Y $(arg yaw)" />
+  <!--<node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
+        args="-sdf -model ridgeback -file /Users/mikepurvis/ridgeback_ws/ridgeback.sdf -x 0 -y 0 -z 0.1" /> -->
+
 </launch>
