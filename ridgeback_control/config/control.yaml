@@ -4,6 +4,7 @@ ridgeback_joint_publisher:
 
 ridgeback_velocity_controller:
   type: "mecanum_drive_controller/MecanumDriveController"
+  base_frame_id: "base_link"
   front_left_wheel_joint: "front_left_wheel"
   back_left_wheel_joint: "rear_left_wheel"
   front_right_wheel_joint: "front_right_wheel"
@@ -19,7 +20,7 @@ ridgeback_velocity_controller:
 
   # Odometry fused with IMU is published by robot_localization, so
   # no need to publish a TF based on encoders alone.
-  enable_odom_tf: false
+  enable_odom_tf: true
 
   # Wheel separation and radius multipliers
   wheel_separation_multiplier: 1.0 # default: 1.0
@@ -48,14 +49,14 @@ ridgeback_velocity_controller:
 ekf_localization:
   frequency: 50
   two_d_mode: true
-  odom0: /ridgeback_velocity_controller/odom
+  odom0: ridgeback_velocity_controller/odom
   odom0_config: [false, false, false,
                  false, false, false,
                  true, true, false,
                  false, false, true,
                  false, false, false]
   odom0_differential: false
-  imu0: /imu/data
+  imu0: imu/data
   imu0_config: [false, false, false,
                 false, false, false,
                 false, false, false,
